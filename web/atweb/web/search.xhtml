@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <f:view contentType="text/html" transient="true">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Search</title>
+            </f:facet>
+            <h:outputStylesheet name="main.css" library="css"/>
+        </h:head>
+
+        <h:body>
+            <p:layout class="centered-layout">
+
+                <p:layoutUnit styleClass="transparent" position="north" size="100" resizable="false" closable="false" collapsible="false">
+
+                </p:layoutUnit>
+
+                <p:layoutUnit styleClass="transparent" position="south" size="50" resizable="false" closable="false" collapsible="false">                    
+                    <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                        <f:facet name="default">
+                            <h:outputText value="Status: StandBy" />
+                        </f:facet>
+
+                        <f:facet name="start">
+                            <p:graphicImage value="http://www.gapminder.org/GapminderMedia/wp-uploads/images_loaders/ajax-loader.gif" />
+                        </f:facet>
+
+                        <f:facet name="complete">
+                            <h:outputText value="Status: Completed" />
+                        </f:facet>
+                    </p:ajaxStatus>                    
+                    <small>Powered By <sup>Total Chaos</sup></small>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" styleClass="transparent" size="50" resizable="false" closable="false" collapsible="false">
+                </p:layoutUnit>
+
+                <p:layoutUnit position="east" styleClass="transparent" size="50" resizable="false" closable="false" collapsible="false">
+                </p:layoutUnit>                
+
+                <p:layoutUnit position="center">
+                    <h1 align="center">ATM Logs Processor Version 1.2.3.4</h1>
+                    <h:form id="login_form">
+                        <p:fieldset legend="Search">
+                            <h:panelGrid columns="2" cellpadding="5" style="width: 600px; margin: 0 auto">
+                                <h:outputText value="Card Number (last four digits)" />
+                                <p:inputMask mask="XXXX XXXX XXXX 9999" value="#{searchBean.searchModel.cardNumber}" />
+
+                                <h:panelGrid />
+                                <p:selectOneRadio id="and_or" value="#{searchBean.searchModel.andOr}">
+                                    <f:selectItem itemLabel="AND" itemValue="and" />
+                                    <f:selectItem itemLabel="OR" itemValue="or" />
+                                </p:selectOneRadio>
+
+                                <h:outputText value="Transaction Date " />
+                                <h:panelGrid/>
+
+                                <h:outputText value="Start Date (YYYY/MM/DD)" />
+                                <p:inputMask mask="9999/99/99" value="#{searchBean.searchModel.startDate}" label="Start Date"/>
+
+                                <h:outputText value="End Date (YYYY/MM/DD)" />
+                                <p:inputMask mask="9999/99/99" value="#{searchBean.searchModel.endDate}" label="End Date" />
+
+                                <h:panelGrid columns="2">                                    
+                                    <p:commandButton value="Search" actionListener="#{searchBean.search()}" update=":result_table" async="true"/>
+                                    <p:commandButton value="Clear"/>
+                                </h:panelGrid>           
+                                <p:poll widgetVar="poll" update=":result_table" listener="#{searchBean.poll()}" interval="5" async="true"/>
+
+                            </h:panelGrid>
+                        </p:fieldset>                        
+                    </h:form>
+
+                    <p:panel>
+
+                    </p:panel>
+
+                    <p:panel id="result_table">
+                        <h:form>
+                            
+                            There are #{searchBean.searchResult.numResults} results
+                            <br />
+                            
+                            <c:forEach items="#{searchBean.searchResult.results}" var="s" varStatus="i">
+                                <p:panel header="Result #{i.index + 1}">
+                                    <pre>#{s}</pre>
+                                </p:panel>
+                            </c:forEach>    
+                        </h:form>
+                    </p:panel>
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>

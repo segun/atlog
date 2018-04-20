@@ -1,0 +1,23 @@
+{application, atlog,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { atlog_app, []}},
+  {env, [
+    {files_location, "C:\\atlog\\all_files\\atlog"},
+    {json_dir, "C:\\atlog\\all_files\\atlog\\json"},
+    {backup_dir, "C:\\atlog\\all_files\\atlog\\backup"},
+    {hyosung_dir, "C:\\atlog\\all_files\\atlog\\hyosung"},
+    {diebold_dir, "C:\\atlog\\all_files\\atlog\\diebold"},
+    {wincor_dir, "C:\\atlog\\all_files\\atlog\\wincor"},
+    {run_after, 5}
+  ]}
+ ]}.
+
+
+  %run_after specify time in minutes between when a parse finished and when the next one should start.
